@@ -18,16 +18,12 @@ let s:last_jump = -1
 
 function! s:get_signs(filename) abort
   redir => l:out
-    silent execute 'sign place'
+    silent execute 'sign place file=' . a:filename
   redir END
-  let l:out = split(l:out, '\n', 0)
-  call remove(l:out, 0) " Remove command output header
+  let l:out = filter(split(l:out, '\n', 0), "v:val =~# '='")
+  call map(l:out, 'v:val[4:]') " Trim indent
 
-  " TODO: Check for existence of any signs first
-  let l:start = index(l:out, 'Signs for '.a:filename.':')
-  let l:next_file = match(l:out, 'Signs for ', l:start + 1)
-  let l:end = l:next_file > -1 ? l:next_file - 1 : -1
-  let s:signs = (l:start > -1 ? l:out[l:start+1:l:end] : [])
+  let s:signs = l:out
 endfunction
 
 function! s:next_sign(filename) abort
