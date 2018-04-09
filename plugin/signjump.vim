@@ -1,8 +1,10 @@
 " File:        signjump.vim
 " Author:      Alex "ZeroKnight" George <http://www.dimensionzero.net>
+" Version:     0.1
+" URL:         https://github.com/ZeroKnight/vim-signjump
+"
 " Description: Jump to signs just like other text objects. A feature that is
 " oddly absent from Vim's sign suite.
-" Version:     0.1
 
 scriptencoding utf-8
 
