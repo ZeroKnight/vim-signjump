@@ -28,36 +28,65 @@ function! s:get_signs(buffer) abort
   return l:out
 endfunction
 
-" TODO: need to sort by lines; then get the id of the desired line and feed to
-" :sign jump
-function! s:next_sign(buffer) abort
-  let l:signs = getbufvar(a:buffer, 'signjump_signs', [])
+function! s:get_sign(line, ...) abort
+  let l:buf = bufnr('%')
+  let l:signs = getbufvar(l:buf, 'signjump_signs', [])
   if empty(l:signs)
+    return []
+  endif
+  let a:offset = get(a:, 1, '')
+  let l:index = match(l:signs, 'line=\<'.a:line.'\>')
+  if a:offset == '+'
+    if l:index == -1
+      for s in l:signs
+        if matchlist(s, 'line=\(\d\+\)')[1] > a:line
+          let l:index = index(l:signs, s)
+          break
+        endif
+      endfor
+    else
+      let l:index += 1
+    endif
+  elseif a:offset == '-'
+    if l:index == -1
+      for s in reverse(copy(l:signs))
+        if matchlist(s, 'line=\(\d\+\)')[1] < a:line
+          let l:index = index(l:signs, s)
+          break
+        endif
+      endfor
+    else
+      let l:index -= 1
+    endif
+  endif
+  if l:index >= len(l:signs) || l:index == -1
+    return []
+  endif
+  return split(l:signs[l:index], '  ', 0)
+endfunction
+
+" TODO: add to jumplist ('', C-o, C-i)
+function! s:jump_to_sign(sign) abort
+  execute 'sign jump'
+    \ substitute(a:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '')
+    \ 'file=' . bufname('%')
+  echom 'Jumping to sign:' string(a:sign)
+endfunction
+
+function! s:next_sign(buffer) abort
+  let l:sign = s:get_sign(line('.'), '+')
+  if empty(l:sign)
     return
   endif
-  let l:last = getbufvar(a:buffer, 'signjump_last_jump', -1)
-  let l:sign = split(l:signs[l:last+1], '  ', 0)
-
-  execute 'sign jump'
-    \ substitute(l:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '')
-    \ 'file=' . bufname(a:buffer)
-  call setbufvar(a:buffer, 'signjump_last_jump', l:last + 1)
-  echom 'Jumping to sign:' string(l:sign)
+  call s:jump_to_sign(l:sign)
 endfunction
 
 function! s:prev_sign(buffer) abort
-  let l:signs = getbufvar(a:buffer, 'signjump_signs', [])
-  if empty(l:signs)
+  let l:sign = s:get_sign(line('.'), '-')
+  if empty(l:sign)
     return
   endif
-  let l:last = getbufvar(a:buffer, 'signjump_last_jump', -1)
-  let l:sign = split(l:signs[l:last-1], '  ', 0)
-
-  execute 'sign jump'
-    \ substitute(l:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '')
-    \ 'file=' . bufname(a:buffer)
-  call setbufvar(a:buffer, 'signjump_last_jump', l:last - 1)
-  echom 'Jumping to sign:' string(l:sign)
+  call s:jump_to_sign(l:sign)
 endfunction
 
 " XXX: For testing
