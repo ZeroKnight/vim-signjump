@@ -13,17 +13,15 @@ if exists('g:loaded_signjump') || !has('signs') || &compatible
 endif
 let g:loaded_signjump = 1
 
-let s:signs = []
-let s:last_jump = -1
-
-function! s:get_signs(filename) abort
+" Typical ':sign place' line:
+" line=25  id=3007  name=FooSign
+function! s:get_signs(buffer) abort
   redir => l:out
-    silent execute 'sign place file=' . a:filename
+    silent execute 'sign place buffer=' . a:buffer
   redir END
   let l:out = filter(split(l:out, '\n', 0), "v:val =~# '='")
   call map(l:out, 'v:val[4:]') " Trim indent
-
-  let s:signs = l:out
+  return l:out
 endfunction
 
 function! s:next_sign(filename) abort
@@ -45,7 +43,7 @@ nnoremap [s :call <SID>prev_sign(expand('%'))<CR>
 augroup SignJumpAutoCmds
   autocmd!
 
-  autocmd BufEnter * call s:get_signs(expand('%'))
+  autocmd BufEnter * call setbufvar(bufnr('%'), 'signjump_signs', s:get_signs(bufnr('%')))
 augroup END
 
 " vim: et sts=2 sw=2
