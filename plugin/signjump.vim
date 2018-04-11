@@ -24,16 +24,36 @@ function! s:get_signs(buffer) abort
   return l:out
 endfunction
 
-function! s:next_sign(filename) abort
-  let l:sign = split(s:signs[s:last_jump+1], '  ', 0)
-  execute 'sign jump' substitute(l:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '') 'file='.a:filename
-  let s:last_jump = s:last_jump + 1
+" TODO: need to sort by lines; then get the id of the desired line and feed to
+" :sign jump
+function! s:next_sign(buffer) abort
+  let l:signs = getbufvar(a:buffer, 'signjump_signs', [])
+  if empty(l:signs)
+    return
+  endif
+  let l:last = getbufvar(a:buffer, 'signjump_last_jump', -1)
+  let l:sign = split(l:signs[l:last+1], '  ', 0)
+
+  execute 'sign jump'
+    \ substitute(l:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '')
+    \ 'file=' . bufname(a:buffer)
+  call setbufvar(a:buffer, 'signjump_last_jump', l:last + 1)
+  echom 'Jumping to sign:' string(l:sign)
 endfunction
 
-function! s:prev_sign(filename) abort
-  let l:sign = split(s:signs[s:last_jump-1], '  ', 0)
-  execute 'sign jump' substitute(l:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '') 'file='.a:filename
-  let s:last_jump = s:last_jump - 1
+function! s:prev_sign(buffer) abort
+  let l:signs = getbufvar(a:buffer, 'signjump_signs', [])
+  if empty(l:signs)
+    return
+  endif
+  let l:last = getbufvar(a:buffer, 'signjump_last_jump', -1)
+  let l:sign = split(l:signs[l:last-1], '  ', 0)
+
+  execute 'sign jump'
+    \ substitute(l:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '')
+    \ 'file=' . bufname(a:buffer)
+  call setbufvar(a:buffer, 'signjump_last_jump', l:last - 1)
+  echom 'Jumping to sign:' string(l:sign)
 endfunction
 
 " XXX: For testing
