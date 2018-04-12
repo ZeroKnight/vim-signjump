@@ -73,7 +73,7 @@ function! s:jump_to_sign(sign) abort
   echom 'Jumping to sign:' string(a:sign)
 endfunction
 
-function! s:next_sign(buffer) abort
+function! s:next_sign() abort
   let l:sign = s:get_sign(line('.'), '+')
   if empty(l:sign)
     return
@@ -81,7 +81,7 @@ function! s:next_sign(buffer) abort
   call s:jump_to_sign(l:sign)
 endfunction
 
-function! s:prev_sign(buffer) abort
+function! s:prev_sign() abort
   let l:sign = s:get_sign(line('.'), '-')
   if empty(l:sign)
     return
