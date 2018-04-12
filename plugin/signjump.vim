@@ -28,6 +28,10 @@ function! s:get_signs(buffer) abort
   return l:out
 endfunction
 
+function! s:get_sign_data(sign, item) abort
+  return matchlist(a:sign, a:item.'=\(\d\+\)')[1]
+endfunction
+
 function! s:get_sign(line, ...) abort
   let l:buf = bufnr('%')
   let l:signs = getbufvar(l:buf, 'signjump_signs', [])
@@ -39,7 +43,7 @@ function! s:get_sign(line, ...) abort
   if a:offset == '+'
     if l:index == -1
       for s in l:signs
-        if matchlist(s, 'line=\(\d\+\)')[1] > a:line
+        if s:get_sign_data(s, 'line') > a:line
           let l:index = index(l:signs, s)
           break
         endif
@@ -50,7 +54,7 @@ function! s:get_sign(line, ...) abort
   elseif a:offset == '-'
     if l:index == -1
       for s in reverse(copy(l:signs))
-        if matchlist(s, 'line=\(\d\+\)')[1] < a:line
+        if s:get_sign_data(s, 'line') < a:line
           let l:index = index(l:signs, s)
           break
         endif
@@ -67,9 +71,7 @@ endfunction
 
 " TODO: add to jumplist ('', C-o, C-i)
 function! s:jump_to_sign(sign) abort
-  execute 'sign jump'
-    \ substitute(a:sign[1], 'id=\(\d\+\)', '\=submatch(1)', '')
-    \ 'file=' . bufname('%')
+  execute 'sign jump' s:get_sign_data(a:sign, 'id') 'buffer=' . bufnr('%')
   echom 'Jumping to sign:' string(a:sign)
 endfunction
 
