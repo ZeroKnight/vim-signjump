@@ -13,6 +13,27 @@ if exists('g:loaded_signjump') || !has('signs') || &compatible
 endif
 let g:loaded_signjump = 1
 
+function! s:default_opt(var, default) abort
+  if !exists('g:signjump_' . a:var)
+    execute 'let g:signjump_' . a:var '=' a:default
+  endif
+endfunction
+
+function! s:init_options() abort
+  let l:options = [
+    \ ['use_jumplist', 0],
+    \ ['debug', 0],
+  \ ]
+  for [opt, val] in l:options
+    call s:default_opt(opt, val)
+  endfor
+endfunction
+call s:init_options()
+
+function! s:opt(var) abort
+  execute 'return g:signjump_' . a:var
+endfunction
+
 " Typical ':sign place' line:
 " line=25  id=3007  name=FooSign
 function! s:get_signs(buffer) abort
@@ -69,10 +90,17 @@ function! s:get_sign(line, ...) abort
   return split(l:signs[l:index], '  ', 0)
 endfunction
 
-" TODO: add to jumplist ('', C-o, C-i)
 function! s:jump_to_sign(sign) abort
-  execute 'sign jump' s:get_sign_data(a:sign, 'id') 'buffer=' . bufnr('%')
-  echom 'Jumping to sign:' string(a:sign)
+  let l:from = line('.')
+  if s:opt('use_jumplist')
+    execute 'normal' s:get_sign_data(a:sign, 'line') . 'G'
+  else
+    execute 'sign jump' s:get_sign_data(a:sign, 'id') 'buffer=' . bufnr('%')
+  endif
+
+  if s:opt('debug')
+    echom 'Jumping to sign:' string(a:sign) . ', from line' l:from
+  endif
 endfunction
 
 function! s:next_sign() abort
