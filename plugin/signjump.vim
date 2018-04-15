@@ -132,4 +132,6 @@ augroup SignJumpAutoCmds
     \ * call setbufvar(bufnr('%'), 'signjump_signs', s:get_signs(bufnr('%')))
 augroup END
 
+command! -bar SignJumpRefresh call <SID>get_signs(bufnr('%'))
+
 " vim: et sts=2 sw=2
