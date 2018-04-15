@@ -126,7 +126,10 @@ nnoremap <silent> [s :call <SID>prev_sign()<CR>
 augroup SignJumpAutoCmds
   autocmd!
 
-  autocmd BufEnter * call setbufvar(bufnr('%'), 'signjump_signs', s:get_signs(bufnr('%')))
+  autocmd BufEnter,BufReadPost,BufWritePost,
+    \ShellCmdPost,FileChangedShellPost,
+    \CursorHold,CursorHoldI
+    \ * call setbufvar(bufnr('%'), 'signjump_signs', s:get_signs(bufnr('%')))
 augroup END
 
 " vim: et sts=2 sw=2
