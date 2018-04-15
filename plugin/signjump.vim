@@ -120,8 +120,8 @@ function! s:prev_sign() abort
 endfunction
 
 " XXX: For testing
-nnoremap ]s :call <SID>next_sign()<CR>
-nnoremap [s :call <SID>prev_sign()<CR>
+nnoremap <silent> ]s :call <SID>next_sign()<CR>
+nnoremap <silent> [s :call <SID>prev_sign()<CR>
 
 augroup SignJumpAutoCmds
   autocmd!
