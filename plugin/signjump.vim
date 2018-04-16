@@ -42,10 +42,13 @@ function! s:get_signs(buffer) abort
   redir END
   let l:out = filter(split(l:out, '\n', 0), "v:val =~# '='")
   call map(l:out, 'v:val[4:]') " Trim indent
-
   call sort(l:out, {a, b ->
     \ str2nr(matchlist(a, 'line=\(\d\+\)')[1]) <
     \ str2nr(matchlist(b, 'line=\(\d\+\)')[1]) ? -1 : 1 })
+
+  if s:opt('debug')
+    echom 'Got' len(l:out) 'signs for buffer' bufname(a:buffer)
+  endif
   return l:out
 endfunction
 
