@@ -13,6 +13,15 @@ if exists('g:loaded_signjump') || !has('signs') || &compatible
 endif
 let g:loaded_signjump = 1
 
+" Idea credit Tim Pope (tpope)
+function! s:map(mode, lhs, rhs, re, ...) abort
+  let l:re = a:re ? 'nore' : ''
+  let l:flags = (a:0 ? a:1 : '') . (a:rhs =~# '^<Plug>' ? '' : '<script>')
+  if !hasmapto(a:rhs, a:mode) && maparg(a:lhs, a:mode) ==# ''
+    execute a:mode.l:re.'map' l:flags a:lhs a:rhs
+  endif
+endfunction
+
 function! s:default_opt(var, default) abort
   if !exists('g:signjump_' . a:var)
     execute 'let g:signjump_' . a:var '=' a:default
@@ -126,9 +135,10 @@ function! s:prev_sign() abort
   call s:jump_to_sign(l:sign)
 endfunction
 
-" XXX: For testing
-nnoremap <silent> ]s :call <SID>next_sign()<CR>
-nnoremap <silent> [s :call <SID>prev_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpNextSign :call <SID>next_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpPrevSign :call <SID>prev_sign()<CR>
+call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
+call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
 
 augroup SignJumpAutoCmds
   autocmd!
