@@ -49,6 +49,10 @@ function! s:get_signs(buffer) abort
   return l:out
 endfunction
 
+function! s:update_signs(buffer) abort
+  call setbufvar(a:buffer, 'signjump_signs', s:get_signs(a:buffer))
+endfunction
+
 function! s:get_sign_data(sign, item) abort
   return matchlist(a:sign, a:item.'=\(\d\+\)')[1]
 endfunction
@@ -126,10 +130,11 @@ nnoremap <silent> [s :call <SID>prev_sign()<CR>
 augroup SignJumpAutoCmds
   autocmd!
 
+  " Update after a delay to ensure all plugins modifying signs have done so
   autocmd BufEnter,BufReadPost,BufWritePost,
     \ShellCmdPost,FileChangedShellPost,
     \CursorHold,CursorHoldI
-    \ * call setbufvar(bufnr('%'), 'signjump_signs', s:get_signs(bufnr('%')))
+    \ * call timer_start(250, {tid -> s:update_signs(bufnr('%'))})
 augroup END
 
 command! -bar SignJumpRefresh call <SID>get_signs(bufnr('%'))
