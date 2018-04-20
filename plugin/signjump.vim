@@ -135,10 +135,30 @@ function! s:prev_sign() abort
   call s:jump_to_sign(l:sign)
 endfunction
 
-nnoremap <silent> <script> <Plug>SignJumpNextSign :call <SID>next_sign()<CR>
-nnoremap <silent> <script> <Plug>SignJumpPrevSign :call <SID>prev_sign()<CR>
+function! s:first_sign() abort
+  let l:sign = s:get_sign(0)
+  if empty(l:sign)
+    let l:sign = s:get_sign(0, '+')
+  endif
+  call s:jump_to_sign(l:sign)
+endfunction
+
+function! s:last_sign() abort
+  let l:sign = s:get_sign(line('$'))
+  if empty(l:sign)
+    let l:sign = s:get_sign(line('$'), '-')
+  endif
+  call s:jump_to_sign(l:sign)
+endfunction
+
+nnoremap <silent> <script> <Plug>SignJumpNextSign  :call <SID>next_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpPrevSign  :call <SID>prev_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpFirstSign :call <SID>first_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpLastSign  :call <SID>last_sign()<CR>
 call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
 call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
+call s:map('n', '[S', '<Plug>SignJumpFirstSign', 0)
+call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
 
 augroup SignJumpAutoCmds
   autocmd!
