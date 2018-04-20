@@ -45,7 +45,7 @@ endfunction
 
 " Typical ':sign place' line:
 " line=25  id=3007  name=FooSign
-function! s:get_signs(buffer) abort
+function! s:get_buffer_signs(buffer) abort
   redir => l:out
     silent execute 'sign place buffer=' . a:buffer
   redir END
@@ -62,7 +62,7 @@ function! s:get_signs(buffer) abort
 endfunction
 
 function! s:update_signs(buffer) abort
-  call setbufvar(a:buffer, 'signjump_signs', s:get_signs(a:buffer))
+  call setbufvar(a:buffer, 'signjump_signs', s:get_buffer_signs(a:buffer))
 endfunction
 
 function! s:get_sign_data(sign, item) abort
@@ -150,6 +150,6 @@ augroup SignJumpAutoCmds
     \ * call timer_start(250, {tid -> s:update_signs(bufnr('%'))})
 augroup END
 
-command! -bar SignJumpRefresh call <SID>get_signs(bufnr('%'))
+command! -bar SignJumpRefresh call <SID>update_signs(bufnr('%'))
 
 " vim: et sts=2 sw=2
