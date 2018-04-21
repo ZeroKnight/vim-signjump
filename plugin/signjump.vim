@@ -62,10 +62,10 @@ function! s:update_signs(buffer) abort
   call setbufvar(a:buffer, 'signjump_signs', s:get_buffer_signs(a:buffer))
 endfunction
 
-nnoremap <silent> <script> <Plug>SignJumpNextSign  :call signjump#next_sign()<CR>
-nnoremap <silent> <script> <Plug>SignJumpPrevSign  :call signjump#prev_sign()<CR>
-nnoremap <silent> <script> <Plug>SignJumpFirstSign :call signjump#first_sign()<CR>
-nnoremap <silent> <script> <Plug>SignJumpLastSign  :call signjump#last_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpNextSign  :<C-U>call signjump#next_sign(v:count1)<CR>
+nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call signjump#prev_sign(v:count1)<CR>
+nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call signjump#first_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call signjump#last_sign()<CR>
 
 if signjump#opt('create_mappings')
   call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
@@ -74,11 +74,11 @@ if signjump#opt('create_mappings')
   call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
 endif
 
-command! -bar SignJumpRefresh call s:update_signs(bufnr('%'))
-command! -bar SignJumpNext    call signjump#next_sign()
-command! -bar SignJumpPrev    call signjump#prev_sign()
-command! -bar SignJumpFirst   call signjump#first_sign()
-command! -bar SignJumpLast    call signjump#last_sign()
+command! -bar SignJumpRefresh     call s:update_signs(bufnr('%'))
+command! -bar SignJumpFirst       call signjump#first_sign()
+command! -bar SignJumpLast        call signjump#last_sign()
+command! -bar -count SignJumpNext call signjump#next_sign(<count>)
+command! -bar -count SignJumpPrev call signjump#prev_sign(<count>)
 
 augroup SignJumpAutoCmds
   autocmd!
