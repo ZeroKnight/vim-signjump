@@ -171,5 +171,9 @@ augroup SignJumpAutoCmds
 augroup END
 
 command! -bar SignJumpRefresh call <SID>update_signs(bufnr('%'))
+command! -bar SignJumpNext    call <SID>next_sign()
+command! -bar SignJumpPrev    call <SID>prev_sign()
+command! -bar SignJumpFirst   call <SID>first_sign()
+command! -bar SignJumpLast    call <SID>last_sign()
 
 " vim: et sts=2 sw=2
