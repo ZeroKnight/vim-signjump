@@ -74,7 +74,7 @@ if signjump#opt('create_mappings')
   call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
 endif
 
-command! -bar SignJumpRefresh call signjump#update_signs(bufnr('%'))
+command! -bar SignJumpRefresh call s:update_signs(bufnr('%'))
 command! -bar SignJumpNext    call signjump#next_sign()
 command! -bar SignJumpPrev    call signjump#prev_sign()
 command! -bar SignJumpFirst   call signjump#first_sign()
