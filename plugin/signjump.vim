@@ -8,7 +8,7 @@
 
 scriptencoding utf-8
 
-if exists('g:loaded_signjump') || !has('signs') || &compatible
+if exists('g:loaded_signjump') || !has('signs') || &compatible || v:version < 700
   finish
 endif
 let g:loaded_signjump = 1
