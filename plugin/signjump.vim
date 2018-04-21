@@ -70,6 +70,7 @@ nnoremap <silent> <script> <Plug>SignJumpLastSign  :call signjump#last_sign()<CR
 if signjump#opt('create_mappings')
   call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
   call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
+  call s:map('n', '[S', '<Plug>SignJumpFirstSign', 0)
   call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
 endif
 
