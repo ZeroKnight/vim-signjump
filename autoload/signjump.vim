@@ -14,8 +14,7 @@ function! signjump#get_sign_data(sign, item) abort
 endfunction
 
 function! signjump#get_sign(line, ...) abort
-  let l:buf = bufnr('%')
-  let l:signs = getbufvar(l:buf, 'signjump_signs', [])
+  let l:signs = getbufvar(bufnr('%'), 'signjump_signs', [])
   if empty(l:signs)
     return []
   endif
