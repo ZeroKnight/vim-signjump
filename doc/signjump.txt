@@ -1,0 +1,136 @@
+*signjump.txt*  Jump to signs just like other object motions.
+
+Author:     Alex "ZeroKnight" George <http://www.dimensionzero.net>
+License:    MIT (see LICENSE included with the plugin distribution)
+Homepage:   https://github.com/ZeroKnight/vim-signjump
+Version:    0.1
+
+Requires Vim version 7.3+ compiled with +signs feature.
+
+==============================================================================
+CONTENTS                                                            *signjump*
+
+    1. Introduction .............................. |signjump-introduction|
+    2. Mappings ...................................... |signjump-mappings|
+    3. Commands ...................................... |signjump-commands|
+    4. Configuration ............................ |signjump-configuration|
+    4. Miscellaneous ..................................... |signjump-misc|
+
+==============================================================================
+INTRODUCTION                                           *signjump-introduction*
+
+Jump to |signs| just like other |object-motions|. A feature that is oddly
+absent from Vim's sign suite. Most plugins that make use of the sign column
+supply mappings or commands that jump to their respective signs. This plugin
+aims to provide the same behavior as a generic motion that works in any file
+with signs.
+
+Jumps are relative to the cursor position. If there is no sign in the jump
+direction, or no signs in the current buffer at all, the cursor will not move.
+
+SignJump keeps a list of signs in each buffer, and will automatically handle
+keeping this list up to date in the background. The list is updated when
+a buffer is created, entered, written to, or when there is no activity for
+a short time (see |CursorHold|).
+
+==============================================================================
+MAPPINGS                                                   *signjump-mappings*
+
+By default, the following four simple mappings are defined to jump between
+signs. The mappings are akin to Tim Pope's Unimpaired
+<https://github.com/tpope/vim-unimpaired> plugin.
+
+These mappings can be disabled with the following line: >
+
+    let g:signjump_create_mappings = 0
+<
+                                                *signjump-]s*
+[count]]s               Jump to the [count]th next sign in the buffer.
+
+                                                *signjump-[s*
+[count][s               Jump to the [count]th previous sign in the buffer.
+
+                                                *signjump-]S*
+]S                      Jump to the last sign in the buffer.
+
+                                                *signjump-[S*
+[S                      Jump to the first sign in the buffer.
+
+==============================================================================
+COMMANDS                                                   *signjump-commands*
+
+The Next, Prev, First, and Last commands are equivalent to the default
+mappings.
+                                                *:SignJumpNext*
+:[count]SignJumpNext    Jump to the [count]th next sign in the buffer.
+
+                                                *:SignJumpPrev*
+:[count]SignJumpPrev    Jump to the [count]th prev sign in the buffer.
+
+                                                *:SignJumpFirst*
+:SignJumpFirst          Jump to the first sign in the buffer.
+
+                                                *:SignJumpLast*
+:SignJumpLast           Jump to the last sign in the buffer.
+
+                                                *:SignJumpRefresh*
+:SignJumpRefresh        Force update the list of signs for the current buffer.
+
+==============================================================================
+CONFIGURATION                        *signjump-options* *signjump-configuration*
+
+                                                *g:signjump_use_jumplist*
+g:signjump_use_jumplist
+Default: 0
+
+Whether or not jumps should be included in the |jumplist|. Disabled by
+default. To enable: >
+
+    let g:signjump_use_jumplist = 1
+<
+
+------------------------------------------------------------------------------
+                                                *g:signjump_create_mappings*
+g:signjump_create_mappings
+Default: 1
+
+Whether or not default mappings should be created. Enabled by default. To
+disable: >
+
+    let g:signjump_create_mappings = 0
+<
+
+------------------------------------------------------------------------------
+                                                *g:signjump_debug*
+g:signjump_debug
+Default: 0
+
+Enables plugin debugging. Not of much use unless you're interested in
+submitting a bug or hacking away at the plugin.
+
+Currently, this option only enables some informational messages during
+operation.
+
+==============================================================================
+MISCELLANEOUS                                                  *signjump-misc*
+
+SignJump is my first Vim plugin. I was inspired to write it by this Vi & Vim
+Stack Exchange question: >
+
+    https://vi.stackexchange.com/q/15846/1452
+<
+I thought that it was very peculiar that Vim doesn't have a user-friendly way
+to jump to signs. The closest thing would be |sign-jump|, but having to supply
+a specific ID and buffer/file name is hardly user friendly, and there's no
+mapping equivalent.
+
+I hope that you find this plugin useful, and appreciate its simplicity and
+light weight. I wrote this plugin with the vision that it be one of those
+"must have missing features" type plugins that anyone would want in their Vim
+configuration.
+
+If you would like to report a bug, request a feature, or send a change, please
+do so on the plugin's issue tracker on GitHub (see Homepage at the top of this
+help file).
+
+ vim:tw=78:et:ft=help:norl:

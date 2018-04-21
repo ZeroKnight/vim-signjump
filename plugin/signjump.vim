@@ -3,7 +3,7 @@
 " Version:     0.1
 " URL:         https://github.com/ZeroKnight/vim-signjump
 "
-" Description: Jump to signs just like other text objects. A feature that is
+" Description: Jump to signs just like other object motions. A feature that is
 " oddly absent from Vim's sign suite.
 
 scriptencoding utf-8
