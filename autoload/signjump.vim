@@ -80,17 +80,11 @@ function! signjump#prev_sign() abort
 endfunction
 
 function! signjump#first_sign() abort
-  let l:sign = signjump#get_sign(0)
-  if empty(l:sign)
-    let l:sign = signjump#get_sign(0, '+')
-  endif
-  call signjump#jump_to_sign(l:sign)
+  let l:signs = getbufvar(bufnr('%'), 'signjump_signs', [])
+  call signjump#jump_to_sign(l:signs[0])
 endfunction
 
 function! signjump#last_sign() abort
-  let l:sign = signjump#get_sign(line('$'))
-  if empty(l:sign)
-    let l:sign = signjump#get_sign(line('$'), '-')
-  endif
-  call signjump#jump_to_sign(l:sign)
+  let l:signs = getbufvar(bufnr('%'), 'signjump_signs', [])
+  call signjump#jump_to_sign(l:signs[-1])
 endfunction
