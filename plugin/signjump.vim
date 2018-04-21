@@ -31,6 +31,7 @@ endfunction
 function! s:init_options() abort
   let l:options = [
     \ ['use_jumplist', 0],
+    \ ['create_mappings', 1],
     \ ['debug', 0],
   \ ]
   for [opt, val] in l:options
@@ -66,9 +67,11 @@ nnoremap <silent> <script> <Plug>SignJumpPrevSign  :call signjump#prev_sign()<CR
 nnoremap <silent> <script> <Plug>SignJumpFirstSign :call signjump#first_sign()<CR>
 nnoremap <silent> <script> <Plug>SignJumpLastSign  :call signjump#last_sign()<CR>
 
-call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
-call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
-call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
+if signjump#opt('create_mappings')
+  call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
+  call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
+  call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
+endif
 
 command! -bar SignJumpRefresh call signjump#update_signs(bufnr('%'))
 command! -bar SignJumpNext    call signjump#next_sign()
