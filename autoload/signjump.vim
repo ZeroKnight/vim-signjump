@@ -6,7 +6,7 @@ endif
 let g:autoloaded_signjump = 1
 
 function! signjump#opt(var) abort
-  execute 'return g:signjump_' . a:var
+  return g:signjump_{a:var}
 endfunction
 
 function! signjump#get_sign_data(sign, item) abort

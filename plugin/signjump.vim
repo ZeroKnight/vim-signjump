@@ -23,8 +23,8 @@ function! s:map(mode, lhs, rhs, re, ...) abort
 endfunction
 
 function! s:default_opt(var, default) abort
-  if !exists('g:signjump_' . a:var)
-    execute 'let g:signjump_' . a:var '=' a:default
+  if !exists("g:signjump_{a:var}")
+    let g:signjump_{a:var} = a:default
   endif
 endfunction
 
