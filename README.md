@@ -14,10 +14,10 @@ Usage
 -----
 
 Using SignJump is simple. By default, the plugin defines mappings for jumping to
-the next, previous, first or last sign akin to Tim Pope's [Unimpaired][1]
-plugin. Use `]s` to jump to the next sign, and `[s` to jump to the previous
-sign. An optional count can be given to jump *n* signs at a time. Likewise,
-capital `S` variants jump to the first and last signs in the buffer.
+the next, previous, first or last sign with mappings akin to Tim Pope's
+[Unimpaired][1] plugin. Use `]s` to jump to the next sign, and `[s` to jump to
+the previous sign. An optional count can be given to jump *n* signs at a time.
+Likewise, capital `S` variants jump to the first and last signs in the buffer.
 
 Jumps are relative to the cursor position. If there is no sign in the jump
 direction, or no signs in the current buffer at all, the cursor will not move.
