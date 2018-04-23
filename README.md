@@ -43,7 +43,7 @@ Stack Exchange question][2].
 
 I thought that it was very peculiar that Vim doesn't have a user-friendly way
 to jump to signs. The closest thing would be `:sign jump ...`, but having to supply
-a specific ID and buffer/file name is hardly user friendly, and there's no
+a specific ID and buffer/file name is hardly user-friendly, and there's no
 mapping equivalent.
 
 I hope that you find this plugin useful, and appreciate its simplicity and
