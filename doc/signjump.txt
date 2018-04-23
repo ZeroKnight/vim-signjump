@@ -90,7 +90,7 @@ create_mappings
 Default: (Not set)
 
 Whether or not default mappings should be created. Not set by default,
-mappings will be created unless explicitly disabled, like so:
+mappings will be created unless explicitly disabled, like so: >
 
     let g:signjump.create_mappings = 0
 <
