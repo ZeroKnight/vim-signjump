@@ -47,10 +47,10 @@ call s:init_options()
 " Typical ':sign place' line:
 " line=25  id=3007  name=FooSign
 function! s:get_buffer_signs(buffer) abort
-  redir => l:out
-    silent execute 'sign place buffer=' . a:buffer
-  redir END
-  let l:out = filter(split(l:out, '\n', 0), "v:val =~# '='")
+  let l:out =
+    \ filter(
+    \   split(execute('sign place buffer='.a:buffer, 'silent'), '\n'),
+    \ "v:val =~# '='")
   call map(l:out, 'v:val[4:]') " Trim indent
   call sort(l:out, {a, b ->
     \ str2nr(matchlist(a, '\vline\=(\d+)')[1]) <
