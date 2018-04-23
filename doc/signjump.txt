@@ -3,7 +3,7 @@
 Author:     Alex "ZeroKnight" George <http://www.dimensionzero.net>
 License:    MIT (see LICENSE included with the plugin distribution)
 Homepage:   https://github.com/ZeroKnight/vim-signjump
-Version:    0.1
+Version:    0.3
 
 Requires Vim version 7.3+ compiled with +signs feature.
 
@@ -27,11 +27,6 @@ with signs.
 
 Jumps are relative to the cursor position. If there is no sign in the jump
 direction, or no signs in the current buffer at all, the cursor will not move.
-
-SignJump keeps a list of signs in each buffer, and will automatically handle
-keeping this list up to date in the background. The list is updated when
-a buffer is created, entered, written to, or when there is no activity for
-a short time (see |CursorHold|).
 
 ==============================================================================
 MAPPINGS                                                   *signjump-mappings*
@@ -72,9 +67,6 @@ mappings.
 
                                                 *:SignJumpLast*
 :SignJumpLast           Jump to the last sign in the buffer.
-
-                                                *:SignJumpRefresh*
-:SignJumpRefresh        Force update the list of signs for the current buffer.
 
 ==============================================================================
 CONFIGURATION                        *signjump-options* *signjump-configuration*
