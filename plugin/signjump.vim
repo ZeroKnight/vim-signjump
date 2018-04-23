@@ -105,7 +105,7 @@ endfunction
 function! s:jump_to_sign(sign) abort
   let l:from = line('.')
   if s:opt('use_jumplist')
-    execute 'normal' s:get_sign_data(a:sign, 'line') . 'G'
+    execute 'normal!' s:get_sign_data(a:sign, 'line') . 'G'
   else
     execute 'sign jump' s:get_sign_data(a:sign, 'id')
       \ 'buffer=' . bufnr('%')
