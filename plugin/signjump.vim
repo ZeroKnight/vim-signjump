@@ -28,7 +28,9 @@ function! s:opt(var, ...) abort
 endfunction
 
 function! s:init_options() abort
-  let g:signjump = {}
+  if !exists('g:signjump')
+    let g:signjump = {}
+  endif
   call extend(g:signjump, {
     \ 'use_jumplist': 0,
     \ 'debug': 0,
@@ -143,7 +145,7 @@ nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call <SID>prev_sign(v:c
 nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call <SID>first_sign()<CR>
 nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call <SID>last_sign()<CR>
 
-if s:opt('create_mappings')
+if s:opt('create_mappings', 1)
   call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
   call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
   call s:map('n', '[S', '<Plug>SignJumpFirstSign', 0)
