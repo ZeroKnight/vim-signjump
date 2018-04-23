@@ -16,7 +16,7 @@ let g:loaded_signjump = 1
 " Idea credit Tim Pope (tpope)
 function! s:map(mode, lhs, rhs, re, ...) abort
   let l:re = a:re ? 'nore' : ''
-  let l:flags = (a:0 ? a:1 : '') . (a:rhs =~# '^<Plug>' ? '' : '<script>')
+  let l:flags = (a:0 ? a:1 : '') . (a:rhs =~# '\m^<Plug>' ? '' : '<script>')
   if !hasmapto(a:rhs, a:mode) && maparg(a:lhs, a:mode) ==# ''
     execute a:mode.l:re.'map' l:flags a:lhs a:rhs
   endif
@@ -53,8 +53,8 @@ function! s:get_buffer_signs(buffer) abort
   let l:out = filter(split(l:out, '\n', 0), "v:val =~# '='")
   call map(l:out, 'v:val[4:]') " Trim indent
   call sort(l:out, {a, b ->
-    \ str2nr(matchlist(a, 'line=\(\d\+\)')[1]) <
-    \ str2nr(matchlist(b, 'line=\(\d\+\)')[1]) ? -1 : 1 })
+    \ str2nr(matchlist(a, '\vline\=(\d+)')[1]) <
+    \ str2nr(matchlist(b, '\vline\=(\d+)')[1]) ? -1 : 1 })
 
   if s:opt('debug')
     echom 'Got' len(l:out) 'signs for buffer' bufname(a:buffer)
@@ -63,7 +63,7 @@ function! s:get_buffer_signs(buffer) abort
 endfunction
 
 function! s:get_sign_data(sign, item) abort
-  return matchlist(a:sign, a:item.'=\(\d\+\)')[1]
+  return matchlist(a:sign, a:item.'\v\=(\d+)')[1]
 endfunction
 
 function! s:get_sign(line, offset, ...) abort
@@ -72,7 +72,7 @@ function! s:get_sign(line, offset, ...) abort
   if empty(l:signs)
     return []
   endif
-  let l:index = match(l:signs, 'line=\<'.a:line.'\>')
+  let l:index = match(l:signs, '\vline\=<'.a:line.'>')
   if a:offset == '+'
     if l:index == -1
       for s in l:signs
