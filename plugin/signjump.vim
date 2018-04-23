@@ -28,6 +28,10 @@ function! s:default_opt(var, default) abort
   endif
 endfunction
 
+function! s:opt(var) abort
+  return g:signjump_{a:var}
+endfunction
+
 function! s:init_options() abort
   let l:options = [
     \ ['use_jumplist', 0],
@@ -52,42 +56,111 @@ function! s:get_buffer_signs(buffer) abort
     \ str2nr(matchlist(a, 'line=\(\d\+\)')[1]) <
     \ str2nr(matchlist(b, 'line=\(\d\+\)')[1]) ? -1 : 1 })
 
-  if signjump#opt('debug')
+  if s:opt('debug')
     echom 'Got' len(l:out) 'signs for buffer' bufname(a:buffer)
   endif
   return l:out
 endfunction
 
-function! s:update_signs(buffer) abort
-  call setbufvar(a:buffer, 'signjump_signs', s:get_buffer_signs(a:buffer))
+function! s:get_sign_data(sign, item) abort
+  return matchlist(a:sign, a:item.'=\(\d\+\)')[1]
 endfunction
 
-nnoremap <silent> <script> <Plug>SignJumpNextSign  :<C-U>call signjump#next_sign(v:count1)<CR>
-nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call signjump#prev_sign(v:count1)<CR>
-nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call signjump#first_sign()<CR>
-nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call signjump#last_sign()<CR>
+function! s:get_sign(line, offset, ...) abort
+  let l:count = a:0 ? a:1 : 1
+  let l:signs = s:get_buffer_signs(bufnr('%'))
+  if empty(l:signs)
+    return []
+  endif
+  let l:index = match(l:signs, 'line=\<'.a:line.'\>')
+  if a:offset == '+'
+    if l:index == -1
+      for s in l:signs
+        if s:get_sign_data(s, 'line') > a:line
+          let l:index = index(l:signs, s) - 1
+          break
+        endif
+      endfor
+    endif
+    let l:index += l:count
+  elseif a:offset == '-'
+    if l:index == -1
+      for s in reverse(copy(l:signs))
+        if s:get_sign_data(s, 'line') < a:line
+          let l:index = index(l:signs, s) + 1
+          break
+        endif
+      endfor
+    endif
+    let l:index -= l:count
+  endif
+  if l:index >= len(l:signs)
+    let l:index = len(l:signs) - 1
+  elseif l:index < 0
+    let l:index = 0
+  endif
+  return split(l:signs[l:index], '  ', 0)
+endfunction
 
-if signjump#opt('create_mappings')
+function! s:jump_to_sign(sign) abort
+  let l:from = line('.')
+  if s:opt('use_jumplist')
+    execute 'normal' s:get_sign_data(a:sign, 'line') . 'G'
+  else
+    execute 'sign jump' s:get_sign_data(a:sign, 'id')
+      \ 'buffer=' . bufnr('%')
+  endif
+
+  if s:opt('debug')
+    echom 'Jumping to sign:' string(a:sign) . ', from line' l:from
+  endif
+endfunction
+
+function! s:next_sign(...) abort
+  let l:count = a:0 ? a:1 : 1
+  let l:sign = s:get_sign(line('.'), '+', l:count)
+  if !empty(l:sign)
+    call s:jump_to_sign(l:sign)
+  endif
+endfunction
+
+function! s:prev_sign(...) abort
+  let l:count = a:0 ? a:1 : 1
+  let l:sign = s:get_sign(line('.'), '-', l:count)
+  if !empty(l:sign)
+    call s:jump_to_sign(l:sign)
+  endif
+endfunction
+
+function! s:first_sign() abort
+  let l:signs = s:get_buffer_signs(bufnr('%'))
+  if !empty(l:signs)
+    call s:jump_to_sign(l:signs[0])
+  endif
+endfunction
+
+function! s:last_sign() abort
+  let l:signs = s:get_buffer_signs(bufnr('%'))
+  if !empty(l:signs)
+    call s:jump_to_sign(l:signs[-1])
+  endif
+endfunction
+
+nnoremap <silent> <script> <Plug>SignJumpNextSign  :<C-U>call <SID>next_sign(v:count1)<CR>
+nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call <SID>prev_sign(v:count1)<CR>
+nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call <SID>first_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call <SID>last_sign()<CR>
+
+if s:opt('create_mappings')
   call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
   call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
   call s:map('n', '[S', '<Plug>SignJumpFirstSign', 0)
   call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
 endif
 
-command! -bar SignJumpRefresh     call s:update_signs(bufnr('%'))
-command! -bar SignJumpFirst       call signjump#first_sign()
-command! -bar SignJumpLast        call signjump#last_sign()
-command! -bar -count SignJumpNext call signjump#next_sign(<count>)
-command! -bar -count SignJumpPrev call signjump#prev_sign(<count>)
-
-augroup SignJumpAutoCmds
-  autocmd!
-
-  " Update after a delay to ensure all plugins modifying signs have done so
-  autocmd BufEnter,BufReadPost,BufWritePost,
-    \ShellCmdPost,FileChangedShellPost,
-    \CursorHold,CursorHoldI
-    \ * call timer_start(250, {tid -> s:update_signs(bufnr('%'))})
-augroup END
+command! -bar -count SignJumpNext call s:next_sign(<count>)
+command! -bar -count SignJumpPrev call s:prev_sign(<count>)
+command! -bar SignJumpFirst       call s:first_sign()
+command! -bar SignJumpLast        call s:last_sign()
 
 " vim: et sts=2 sw=2
