@@ -42,7 +42,7 @@ SignJump is my first Vim plugin. I was inspired to write it by this [Vi & Vim
 Stack Exchange question][2].
 
 I thought that it was very peculiar that Vim doesn't have a user-friendly way
-to jump to signs. The closest thing would be sign-jump, but having to supply
+to jump to signs. The closest thing would be `:sign jump ...`, but having to supply
 a specific ID and buffer/file name is hardly user friendly, and there's no
 mapping equivalent.
 
