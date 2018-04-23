@@ -71,30 +71,33 @@ mappings.
 ==============================================================================
 CONFIGURATION                        *signjump-options* *signjump-configuration*
 
-                                                *g:signjump_use_jumplist*
-g:signjump_use_jumplist
+Plugin options are kept in `g:signjump`, a global |Dictionary|. Its keys are
+the option names.
+
+                                                *g:signjump.use_jumplist*
+use_jumplist
 Default: 0
 
 Whether or not jumps should be included in the |jumplist|. Disabled by
 default. To enable: >
 
-    let g:signjump_use_jumplist = 1
+    let g:signjump.use_jumplist = 1
 <
 
 ------------------------------------------------------------------------------
-                                                *g:signjump_create_mappings*
-g:signjump_create_mappings
-Default: 1
+                                                *g:signjump.create_mappings*
+create_mappings
+Default: (Not set)
 
-Whether or not default mappings should be created. Enabled by default. To
-disable: >
+Whether or not default mappings should be created. Not set by default,
+mappings will be created unless explicitly disabled, like so:
 
-    let g:signjump_create_mappings = 0
+    let g:signjump.create_mappings = 0
 <
 
 ------------------------------------------------------------------------------
-                                                *g:signjump_debug*
-g:signjump_debug
+                                                *g:signjump.debug*
+debug
 Default: 0
 
 Enables plugin debugging. Not of much use unless you're interested in

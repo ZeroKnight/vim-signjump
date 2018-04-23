@@ -22,25 +22,17 @@ function! s:map(mode, lhs, rhs, re, ...) abort
   endif
 endfunction
 
-function! s:default_opt(var, default) abort
-  if !exists("g:signjump_{a:var}")
-    let g:signjump_{a:var} = a:default
-  endif
-endfunction
-
-function! s:opt(var) abort
-  return g:signjump_{a:var}
+function! s:opt(var, ...) abort
+  let l:default = a:0 ? a:1 : 0
+  return get(g:signjump, a:var, l:default)
 endfunction
 
 function! s:init_options() abort
-  let l:options = [
-    \ ['use_jumplist', 0],
-    \ ['create_mappings', 1],
-    \ ['debug', 0],
-  \ ]
-  for [opt, val] in l:options
-    call s:default_opt(opt, val)
-  endfor
+  let g:signjump = {}
+  call extend(g:signjump, {
+    \ 'use_jumplist': 0,
+    \ 'debug': 0,
+  \ }, 'keep')
 endfunction
 call s:init_options()
 
