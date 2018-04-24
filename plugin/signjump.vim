@@ -6,8 +6,6 @@
 " Description: Jump to signs just like other object motions. A feature that is
 " oddly absent from Vim's sign suite.
 
-scriptencoding utf-8
-
 if exists('g:loaded_signjump') || !has('signs') || &compatible || v:version < 700
   finish
 endif
