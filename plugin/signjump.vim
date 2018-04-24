@@ -31,99 +31,10 @@ function! s:init_options() abort
 endfunction
 call s:init_options()
 
-function! s:bound(idx, len) abort
-  return min([max([0, a:idx]), a:len - 1])
-endfunction
-
-" Typical ':sign place' line:
-" line=25  id=3007  name=FooSign
-function! s:get_buffer_signs(buffer) abort
-  let l:out =
-    \ filter(
-    \   split(execute('sign place buffer='.a:buffer, 'silent'), '\n'),
-    \ "v:val =~# '='")
-  call map(l:out, 'v:val[4:]') " Trim indent
-  call sort(l:out, {a, b ->
-    \ str2nr(matchlist(a, '\vline\=(\d+)')[1]) <
-    \ str2nr(matchlist(b, '\vline\=(\d+)')[1]) ? -1 : 1 })
-
-  if g:signjump.debug
-    echom 'Got' len(l:out) 'signs for buffer' bufname(a:buffer)
-  endif
-  return l:out
-endfunction
-
-function! s:get_sign_data(sign, item) abort
-  return matchlist(a:sign, a:item.'\v\=(\d+)')[1]
-endfunction
-
-function! s:get_sign(line, offset, ...) abort
-  let l:count = a:0 ? a:1 : 1
-  let l:signs = s:get_buffer_signs(bufnr('%'))
-  if empty(l:signs)
-    return []
-  endif
-  let l:index = match(l:signs, '\vline\=<'.a:line.'>')
-  if l:index == -1
-    if a:offset == '+'
-      call filter(l:signs, {idx, val -> s:get_sign_data(val, 'line') > a:line})
-    elseif a:offset == '-'
-      call filter(l:signs, {idx, val -> s:get_sign_data(val, 'line') < a:line})
-      let l:index = len(l:signs)
-    endif
-  endif
-  let l:index = s:bound(eval('l:index'.a:offset.'l:count'), len(l:signs))
-  return split(l:signs[l:index], '  ')
-endfunction
-
-function! s:jump_to_sign(sign) abort
-  let l:from = line('.')
-  if g:signjump.use_jumplist
-    execute 'normal!' s:get_sign_data(a:sign, 'line') . 'G'
-  else
-    execute 'sign jump' s:get_sign_data(a:sign, 'id')
-      \ 'buffer=' . bufnr('%')
-  endif
-
-  if g:signjump.debug
-    echom 'Jumping to sign:' string(a:sign) . ', from line' l:from
-  endif
-endfunction
-
-function! s:next_sign(...) abort
-  let l:count = a:0 ? a:1 : 1
-  let l:sign = s:get_sign(line('.'), '+', l:count)
-  if !empty(l:sign)
-    call s:jump_to_sign(l:sign)
-  endif
-endfunction
-
-function! s:prev_sign(...) abort
-  let l:count = a:0 ? a:1 : 1
-  let l:sign = s:get_sign(line('.'), '-', l:count)
-  if !empty(l:sign)
-    call s:jump_to_sign(l:sign)
-  endif
-endfunction
-
-function! s:first_sign() abort
-  let l:signs = s:get_buffer_signs(bufnr('%'))
-  if !empty(l:signs)
-    call s:jump_to_sign(l:signs[0])
-  endif
-endfunction
-
-function! s:last_sign() abort
-  let l:signs = s:get_buffer_signs(bufnr('%'))
-  if !empty(l:signs)
-    call s:jump_to_sign(l:signs[-1])
-  endif
-endfunction
-
-nnoremap <silent> <script> <Plug>SignJumpNextSign  :<C-U>call <SID>next_sign(v:count1)<CR>
-nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call <SID>prev_sign(v:count1)<CR>
-nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call <SID>first_sign()<CR>
-nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call <SID>last_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpNextSign  :<C-U>call signjump#next_sign(v:count1)<CR>
+nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call signjump#prev_sign(v:count1)<CR>
+nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call signjump#first_sign()<CR>
+nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call signjump#last_sign()<CR>
 
 if get(g:signjump, 'create_mappings', 1)
   call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
@@ -132,9 +43,9 @@ if get(g:signjump, 'create_mappings', 1)
   call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
 endif
 
-command! -bar -count SignJumpNext call s:next_sign(<count>)
-command! -bar -count SignJumpPrev call s:prev_sign(<count>)
-command! -bar SignJumpFirst       call s:first_sign()
-command! -bar SignJumpLast        call s:last_sign()
+command! -bar -count SignJumpNext call signjump#next_sign(<count>)
+command! -bar -count SignJumpPrev call signjump#prev_sign(<count>)
+command! -bar SignJumpFirst       call signjump#first_sign()
+command! -bar SignJumpLast        call signjump#last_sign()
 
 " vim: et sts=2 sw=2
