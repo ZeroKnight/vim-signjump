@@ -20,11 +20,6 @@ function! s:map(mode, lhs, rhs, re, ...) abort
   endif
 endfunction
 
-function! s:opt(var, ...) abort
-  let l:default = a:0 ? a:1 : 0
-  return get(g:signjump, a:var, l:default)
-endfunction
-
 function! s:init_options() abort
   if !exists('g:signjump')
     let g:signjump = {}
@@ -52,7 +47,7 @@ function! s:get_buffer_signs(buffer) abort
     \ str2nr(matchlist(a, '\vline\=(\d+)')[1]) <
     \ str2nr(matchlist(b, '\vline\=(\d+)')[1]) ? -1 : 1 })
 
-  if s:opt('debug')
+  if g:signjump.debug
     echom 'Got' len(l:out) 'signs for buffer' bufname(a:buffer)
   endif
   return l:out
@@ -83,14 +78,14 @@ endfunction
 
 function! s:jump_to_sign(sign) abort
   let l:from = line('.')
-  if s:opt('use_jumplist')
+  if g:signjump.use_jumplist
     execute 'normal!' s:get_sign_data(a:sign, 'line') . 'G'
   else
     execute 'sign jump' s:get_sign_data(a:sign, 'id')
       \ 'buffer=' . bufnr('%')
   endif
 
-  if s:opt('debug')
+  if g:signjump.debug
     echom 'Jumping to sign:' string(a:sign) . ', from line' l:from
   endif
 endfunction
@@ -130,7 +125,7 @@ nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call <SID>prev_sign(v:c
 nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call <SID>first_sign()<CR>
 nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call <SID>last_sign()<CR>
 
-if s:opt('create_mappings', 1)
+if get(g:signjump, 'create_mappings', 1)
   call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
   call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
   call s:map('n', '[S', '<Plug>SignJumpFirstSign', 0)
