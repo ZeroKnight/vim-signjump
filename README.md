@@ -35,8 +35,8 @@ Configuration
 
 See `:h signjump-configuration` for options.
 
-Acknowledgements & Misc
------------------------
+Background
+----------
 
 SignJump is my first Vim plugin. I was inspired to write it by this [Vi & Vim
 Stack Exchange question][2].
@@ -50,6 +50,14 @@ I hope that you find this plugin useful, and appreciate its simplicity and
 light weight. I wrote this plugin with the vision that it be one of those
 "must have missing features" type plugins that anyone would want in their Vim
 configuration.
+
+Acknowledgements
+----------------
+
+* [Andreas Louv](https://github.com/andlrc) - Early code review.
+* [Luc Hermitte](https://github.com/LucHermitte) - Insightful early code review
+    and suggestions; drove several refactors. Answered my neophyte questions.
+    Thank you!
 
 [1]: https://github.com/tpope/vim-unimpaired
 [2]: https://vi.stackexchange.com/q/15846/1452
