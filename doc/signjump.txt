@@ -3,7 +3,7 @@
 Author:     Alex "ZeroKnight" George <http://www.dimensionzero.net>
 License:    MIT (see LICENSE included with the plugin distribution)
 Homepage:   https://github.com/ZeroKnight/vim-signjump
-Version:    0.3
+Version:    0.4
 
 Requires Vim version 7.3+ compiled with +signs feature.
 
@@ -116,7 +116,7 @@ Stack Exchange question: >
 <
 I thought that it was very peculiar that Vim doesn't have a user-friendly way
 to jump to signs. The closest thing would be |sign-jump|, but having to supply
-a specific ID and buffer/file name is hardly user friendly, and there's no
+a specific ID and buffer/file name is hardly user-friendly, and there's no
 mapping equivalent.
 
 I hope that you find this plugin useful, and appreciate its simplicity and
