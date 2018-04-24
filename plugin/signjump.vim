@@ -38,6 +38,10 @@ function! s:init_options() abort
 endfunction
 call s:init_options()
 
+function! s:bound(idx, len) abort
+  return min([max([0, a:idx]), a:len - 1])
+endfunction
+
 " Typical ':sign place' line:
 " line=25  id=3007  name=FooSign
 function! s:get_buffer_signs(buffer) abort
@@ -67,33 +71,16 @@ function! s:get_sign(line, offset, ...) abort
     return []
   endif
   let l:index = match(l:signs, '\vline\=<'.a:line.'>')
-  if a:offset == '+'
-    if l:index == -1
-      for s in l:signs
-        if s:get_sign_data(s, 'line') > a:line
-          let l:index = index(l:signs, s) - 1
-          break
-        endif
-      endfor
+  if l:index == -1
+    if a:offset == '+'
+      call filter(l:signs, {idx, val -> s:get_sign_data(val, 'line') > a:line})
+    elseif a:offset == '-'
+      call filter(l:signs, {idx, val -> s:get_sign_data(val, 'line') < a:line})
+      let l:index = len(l:signs)
     endif
-    let l:index += l:count
-  elseif a:offset == '-'
-    if l:index == -1
-      for s in reverse(copy(l:signs))
-        if s:get_sign_data(s, 'line') < a:line
-          let l:index = index(l:signs, s) + 1
-          break
-        endif
-      endfor
-    endif
-    let l:index -= l:count
   endif
-  if l:index >= len(l:signs)
-    let l:index = len(l:signs) - 1
-  elseif l:index < 0
-    let l:index = 0
-  endif
-  return split(l:signs[l:index], '  ', 0)
+  let l:index = s:bound(eval('l:index'.a:offset.'l:count'), len(l:signs))
+  return split(l:signs[l:index], '  ')
 endfunction
 
 function! s:jump_to_sign(sign) abort
