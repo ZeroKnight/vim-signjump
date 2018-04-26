@@ -95,7 +95,7 @@ vimrc/init.vim:
 
 ```vim
 " Load packages now so that they are in 'runtimepath', otherwise helptags won't
-be able to find them.
+" be able to find them.
 packloadall
 
 " Quietly generate tags for help files.
