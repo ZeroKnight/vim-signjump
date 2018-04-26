@@ -28,7 +28,79 @@ See `:h signjump-commands` for details.
 Installation
 ------------
 
-Use a plugin manager of your choice, or manually add to your `~/.vim` directory.
+No special steps are required for installation. Refer to your plugin manager's
+documentation for detailed and specific setup and plugin installation
+instructions. Or, if you prefer to do things the hard way, you can manually
+install SignJump by adding its directories to your `~/.vim` directory.
+
+### Using Vim-Plug or Vundle
+
+Using [Vim-Plug](https://github.com/junegunn/vim-plug):
+
+```vim
+Plug 'ZeroKnight/vim-signjump'
+```
+
+Run `:PlugInstall` in Vim.
+
+Using [Vundle](https://github.com/VundleVim/Vundle.vim):
+
+```vim
+Plugin 'ZeroKnight/vim-signjump'
+```
+
+Run `:PluginInstall` in Vim.
+
+### Using [Pathogen](https://github.com/tpope/vim-pathogen)
+
+```bash
+cd ~/.vim/bundle
+git clone git://github.com/ZeroKnight/vim-signjump.git
+```
+
+Run `:Helptags` in Vim.
+
+### Using Vim or Neovim packages
+
+Vim, as of version 7.4.1486, and [Neovim][2] have native package management that
+doesn't require any third-party plugins.
+
+The default package path depends on whether you are using Vim or Neovim, so be
+sure to use the appropriate path. You may need to create it first, if it does
+not exist.
+
+```bash
+cd ~/.vim                    # Vim 8.0
+cd ~/.local/share/nvim/site  # Neovim
+```
+
+Create the package directory. (Neo)Vim will look for packages under the 'pack'
+directory. Each **package** can contain one *or more* **plugins**. Here, we
+assume you'll put your plugins installed via `git` in a package called
+'git-plugins', but you can name this whatever you'd like.
+
+```bash
+mkdir -p pack/git-plugins/start
+```
+
+Clone the repository.
+
+```bash
+git clone https://github.com/ZeroKnight/vim-signjump pack/git-plugins/start/vim-signjump
+```
+
+You'll need to generate tags for the help file in order to view it with `:help`.
+You can do this manually, or add the following to the **end** of your
+vimrc/init.vim:
+
+```vim
+" Load packages now so that they are in 'runtimepath', otherwise helptags won't
+be able to find them.
+packloadall
+
+" Quietly generate tags for help files.
+silent! helptags ALL
+```
 
 Configuration
 -------------
@@ -60,4 +132,5 @@ Acknowledgements
     Thank you!
 
 [1]: https://github.com/tpope/vim-unimpaired
-[2]: https://vi.stackexchange.com/q/15846/1452
+[2]: https://github.com/neovim/neovim
+[3]: https://vi.stackexchange.com/q/15846/1452
