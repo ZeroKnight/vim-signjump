@@ -74,8 +74,27 @@ mappings.
 CONFIGURATION                        *signjump-options* *signjump-configuration*
 
 Plugin options are kept in `g:signjump`, a global |Dictionary|. Its keys are
-the option names.
+the option names. This is unlike most plugins, where each option is a separate
+global variable. This pollutes the global namespace less, and allows for
+better organization. As a consequence, configuration is slightly different.
 
+In addition to setting individual options, you must also define the
+`g:signjump` dictionary, otherwise you will get errors at startup. While this
+is an extra step, it in fact allows you to configure all desired options in
+one statement, as opposed to several over multiple lines. Here is an example
+configuration: >
+
+    let g:signjump = {
+      \ 'use_jumplist': 1,
+      \ 'map_next_sign': '>s',
+      \ 'map_prev_sign': '<s'
+    \ }
+<
+Or, only a single line: >
+
+    let g:signjump = { 'use_jumplist': 1, 'create_mappings': 0 }
+<
+------------------------------------------------------------------------------
                                                 *g:signjump.use_jumplist*
 use_jumplist
 Default: 0
@@ -83,9 +102,12 @@ Default: 0
 Whether or not jumps should be included in the |jumplist|. Disabled by
 default. To enable: >
 
+    let g:signjump = { 'use_jumplist': 1 }
+
+Can be changed on the fly with: >
+
     let g:signjump.use_jumplist = 1
 <
-
 ------------------------------------------------------------------------------
                                                 *g:signjump.map_next_sign*
 map_next_sign
@@ -93,7 +115,7 @@ Default: ']s'
 
 Holds the desired mapping for jumping to the next sign. >
 
-    let g:signjump.map_next_sign = ']s'
+    let g:signjump = { 'map_next_sign': ']s' }
 <
 ------------------------------------------------------------------------------
                                                 *g:signjump.map_prev_sign*
@@ -102,7 +124,7 @@ Default: '[s'
 
 Holds the desired mapping for jumping to the previous sign. >
 
-    let g:signjump.map_prev_sign = '[s'
+    let g:signjump = { 'map_prev_sign': '[s' }
 <
 ------------------------------------------------------------------------------
                                                 *g:signjump.map_first_sign*
@@ -111,7 +133,7 @@ Default: '[S'
 
 Holds the desired mapping for jumping to the first sign. >
 
-    let g:signjump.map_first_sign = ']S'
+    let g:signjump = { 'map_first_sign': ']S' }
 <
 ------------------------------------------------------------------------------
                                                 *g:signjump.map_last_sign*
@@ -120,7 +142,7 @@ Default: ']S'
 
 Holds the desired mapping for jumping to the last sign. >
 
-    let g:signjump.map_last_sign = '[S'
+    let g:signjump = { 'map_last_sign': '[S' }
 <
 ------------------------------------------------------------------------------
                                                 *g:signjump.create_mappings*
@@ -131,7 +153,7 @@ Whether or not mappings should be created by the plugin at all. For those that
 desire total control over their mappings. Not set by default, mappings will be
 created unless explicitly disabled, like so: >
 
-    let g:signjump.create_mappings = 0
+    let g:signjump = { 'create_mappings': 0 }
 <
 ------------------------------------------------------------------------------
                                                 *g:signjump.debug*
@@ -139,8 +161,11 @@ debug
 Default: 0
 
 Enables plugin debugging. Not of much use unless you're interested in
-submitting a bug or hacking away at the plugin.
+submitting a bug or hacking away at the plugin. Can be changed on the fly
+with: >
 
+    let g:signjump.debug = 1
+<
 Currently, this option only enables some informational messages during
 operation.
 
