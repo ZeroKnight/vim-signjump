@@ -36,10 +36,9 @@ signs. The mappings are akin to Tim Pope's Unimpaired
 <https://github.com/tpope/vim-unimpaired> plugin.
 
 These mappings can be customized by adjusting their corresponding options,
-listed in |signjump-configuration|, or disabled entirely with the following
-line: >
+listed in |signjump-configuration|, or disabled entirely with: >
 
-    let g:signjump_create_mappings = 0
+    let g:signjump = { 'create_mappings': 0 }
 <
                                                 *signjump-]s*
 [count]]s               Jump to the [count]th next sign in the buffer.
