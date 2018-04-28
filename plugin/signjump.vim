@@ -1,6 +1,6 @@
 " File:        signjump.vim
 " Author:      Alex "ZeroKnight" George <http://www.dimensionzero.net>
-" Version:     0.4
+" Version:     0.5
 " URL:         https://github.com/ZeroKnight/vim-signjump
 "
 " Description: Jump to signs just like other object motions. A feature that is
