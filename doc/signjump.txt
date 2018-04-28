@@ -35,7 +35,9 @@ By default, the following four simple mappings are defined to jump between
 signs. The mappings are akin to Tim Pope's Unimpaired
 <https://github.com/tpope/vim-unimpaired> plugin.
 
-These mappings can be disabled with the following line: >
+These mappings can be customized by adjusting their corresponding options,
+listed in |signjump-configuration|, or disabled entirely with the following
+line: >
 
     let g:signjump_create_mappings = 0
 <
@@ -85,16 +87,52 @@ default. To enable: >
 <
 
 ------------------------------------------------------------------------------
+                                                *g:signjump.map_next_sign*
+map_next_sign
+Default: ']s'
+
+Holds the desired mapping for jumping to the next sign. >
+
+    let g:signjump.map_next_sign = ']s'
+<
+------------------------------------------------------------------------------
+                                                *g:signjump.map_prev_sign*
+map_prev_sign
+Default: '[s'
+
+Holds the desired mapping for jumping to the previous sign. >
+
+    let g:signjump.map_prev_sign = '[s'
+<
+------------------------------------------------------------------------------
+                                                *g:signjump.map_first_sign*
+map_first_sign
+Default: '[S'
+
+Holds the desired mapping for jumping to the first sign. >
+
+    let g:signjump.map_first_sign = ']S'
+<
+------------------------------------------------------------------------------
+                                                *g:signjump.map_last_sign*
+map_last_sign
+Default: ']S'
+
+Holds the desired mapping for jumping to the last sign. >
+
+    let g:signjump.map_last_sign = '[S'
+<
+------------------------------------------------------------------------------
                                                 *g:signjump.create_mappings*
 create_mappings
 Default: (Not set)
 
-Whether or not default mappings should be created. Not set by default,
-mappings will be created unless explicitly disabled, like so: >
+Whether or not mappings should be created by the plugin at all. For those that
+desire total control over their mappings. Not set by default, mappings will be
+created unless explicitly disabled, like so: >
 
     let g:signjump.create_mappings = 0
 <
-
 ------------------------------------------------------------------------------
                                                 *g:signjump.debug*
 debug

@@ -25,8 +25,12 @@ function! s:init_options() abort
     let g:signjump = {}
   endif
   call extend(g:signjump, {
-    \ 'use_jumplist': 0,
-    \ 'debug': 0,
+    \ 'map_next_sign':      ']s',
+    \ 'map_prev_sign':      '[s',
+    \ 'map_first_sign':     '[S',
+    \ 'map_last_sign':      ']S',
+    \ 'use_jumplist':       0,
+    \ 'debug':              0,
   \ }, 'keep')
 endfunction
 call s:init_options()
@@ -37,10 +41,10 @@ nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call signjump#first_sig
 nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call signjump#last_sign()<CR>
 
 if get(g:signjump, 'create_mappings', 1)
-  call s:map('n', ']s', '<Plug>SignJumpNextSign', 0)
-  call s:map('n', '[s', '<Plug>SignJumpPrevSign', 0)
-  call s:map('n', '[S', '<Plug>SignJumpFirstSign', 0)
-  call s:map('n', ']S', '<Plug>SignJumpLastSign', 0)
+  call s:map('n', g:signjump.map_next_sign, '<Plug>SignJumpNextSign', 0)
+  call s:map('n', g:signjump.map_prev_sign, '<Plug>SignJumpPrevSign', 0)
+  call s:map('n', g:signjump.map_first_sign, '<Plug>SignJumpFirstSign', 0)
+  call s:map('n', g:signjump.map_last_sign, '<Plug>SignJumpLastSign', 0)
 endif
 
 command! -bar -count SignJumpNext call signjump#next_sign(<count>)
