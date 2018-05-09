@@ -10,6 +10,12 @@ endfunction
 " Typical ':sign place' line:
 " line=25  id=3007  name=FooSign
 function! signjump#get_buffer_signs(buffer) abort
+  " Ensure :sign place can be parsed in all locales
+  let l:lang_save = v:lang
+  if v:lang !=# 'C'
+    silent! language messages 'C'
+  endif
+
   let l:out =
     \ filter(
     \   split(execute('sign place buffer='.a:buffer, 'silent'), '\n'),
@@ -21,6 +27,9 @@ function! signjump#get_buffer_signs(buffer) abort
 
   if g:signjump.debug
     echom 'Got' len(l:out) 'signs for buffer' bufname(a:buffer)
+  endif
+  if l:lang_save !=# 'C'
+    execute 'silent! language messages' l:lang_save
   endif
   return l:out
 endfunction
