@@ -13,7 +13,7 @@ function! signjump#get_buffer_signs(buffer) abort
   " Ensure :sign place can be parsed in all locales
   let l:lang_save = v:lang
   if v:lang !=# 'C'
-    silent! language messages 'C'
+    silent! language messages C
   endif
 
   let l:out =
