@@ -48,9 +48,9 @@ if get(g:signjump, 'create_mappings', 1)
   call s:map('n', g:signjump.map_last_sign, '<Plug>SignJumpLastSign', 0)
 endif
 
-command! -bar -count SignJumpNext call signjump#next_sign(<count>)
-command! -bar -count SignJumpPrev call signjump#prev_sign(<count>)
-command! -bar SignJumpFirst       call signjump#first_sign()
-command! -bar SignJumpLast        call signjump#last_sign()
+command! -bar -count=1 SignJumpNext call signjump#next_sign(<count>)
+command! -bar -count=1 SignJumpPrev call signjump#prev_sign(<count>)
+command! -bar SignJumpFirst         call signjump#first_sign()
+command! -bar SignJumpLast          call signjump#last_sign()
 
 " vim: et sts=2 sw=2
