@@ -55,6 +55,9 @@ function! signjump#get_sign(line, offset, ...) abort
       let l:index = len(l:signs)
     endif
   endif
+  if len(l:signs) == 0
+    return []
+  endif
   let l:index = s:bound(eval('l:index'.a:offset.'l:count'), len(l:signs))
   return split(l:signs[l:index], '  ')
 endfunction
