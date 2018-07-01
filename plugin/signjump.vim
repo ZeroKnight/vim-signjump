@@ -30,6 +30,7 @@ function! s:init_options() abort
     \ 'map_first_sign':     '[S',
     \ 'map_last_sign':      ']S',
     \ 'use_jumplist':       0,
+    \ 'wrap':               1,
     \ 'debug':              0,
   \ }, 'keep')
 endfunction

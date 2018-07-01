@@ -22,7 +22,7 @@ INTRODUCTION                                           *signjump-introduction*
 Jump to |signs| just like other |object-motions|. A feature that is oddly
 absent from Vim's sign suite. Most plugins that make use of the sign column
 supply mappings or commands that jump to their respective signs. This plugin
-aims to provide the same behavior as a generic motion that works in any file
+aims to provide the same behavior as a generic motion that works in any buffer
 with signs.
 
 Jumps are relative to the cursor position. If there is no sign in the jump
@@ -79,9 +79,9 @@ better organization. As a consequence, configuration is slightly different.
 
 In addition to setting individual options, you must also define the
 `g:signjump` dictionary, otherwise you will get errors at startup. While this
-is an extra step, it in fact allows you to configure all desired options in
-one statement, as opposed to several over multiple lines. Here is an example
-configuration: >
+may initially appear to be an extra step, it in fact allows you to configure
+all desired options in one statement, as opposed to several over multiple
+lines. Here is an example configuration: >
 
     let g:signjump = {
       \ 'use_jumplist': 1,
@@ -106,6 +106,35 @@ default. To enable: >
 Can be changed on the fly with: >
 
     let g:signjump.use_jumplist = 1
+<
+------------------------------------------------------------------------------
+                                                *g:signjump.wrap*
+wrap
+Default: 1
+
+Determines whether or not jumps should wrap around the beginning or the end of
+the buffer, similar to searches. Defaults to 1, where wrapping will only
+happen when 'wrapscan' is enabled. Wrapping can be explicitly enabled or
+disabled by setting the option value to 2 or 0 respectively.
+
+Behavior chart: >
+
+    signjump.wrap | wrapscan | Should jump wrap?
+    --------------+----------+------------------
+                0 | Off      | No
+                0 | On       | No
+                1 | Off      | No
+                1 | On       | Yes
+                2 | Off      | Yes
+                2 | On       | Yes
+<
+To configure: >
+
+    let g:signjump = { 'wrap': 0 }  " Never wrap jumps
+<
+Can be changed on the fly with: >
+
+    let g:signjump.wrap = 2
 <
 ------------------------------------------------------------------------------
                                                 *g:signjump.map_next_sign*
