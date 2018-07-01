@@ -36,10 +36,10 @@ function! s:init_options() abort
 endfunction
 call s:init_options()
 
-nnoremap <silent> <script> <Plug>SignJumpNextSign  :<C-U>call signjump#next_sign(v:count1)<CR>
-nnoremap <silent> <script> <Plug>SignJumpPrevSign  :<C-U>call signjump#prev_sign(v:count1)<CR>
-nnoremap <silent> <script> <Plug>SignJumpFirstSign :<C-U>call signjump#first_sign()<CR>
-nnoremap <silent> <script> <Plug>SignJumpLastSign  :<C-U>call signjump#last_sign()<CR>
+nnoremap <silent> <Plug>SignJumpNextSign  :<C-U>call signjump#next_sign(v:count1)<CR>
+nnoremap <silent> <Plug>SignJumpPrevSign  :<C-U>call signjump#prev_sign(v:count1)<CR>
+nnoremap <silent> <Plug>SignJumpFirstSign :<C-U>call signjump#first_sign()<CR>
+nnoremap <silent> <Plug>SignJumpLastSign  :<C-U>call signjump#last_sign()<CR>
 
 if get(g:signjump, 'create_mappings', 1)
   call s:map('n', g:signjump.map_next_sign, '<Plug>SignJumpNextSign', 0)
