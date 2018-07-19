@@ -109,11 +109,11 @@ endfunction
 
 function! signjump#next_sign(...) abort
   let l:count = a:0 ? a:1 : 1
-  let l:from = line('.')
-  let l:sign = signjump#get_sign(line('.'), '+', l:count)
+  let l:ln = line('.')
+  let l:sign = signjump#get_sign(l:ln, '+', l:count)
   if !empty(l:sign)
     call signjump#jump_to_sign(l:sign)
-    if signjump#get_sign_data(l:sign, 'line') < l:from
+    if signjump#get_sign_data(l:sign, 'line') < l:ln
       \ && stridx(&shortmess, 's')
       call s:err('search hit BOTTOM, continuing at TOP')
     endif
@@ -122,11 +122,11 @@ endfunction
 
 function! signjump#prev_sign(...) abort
   let l:count = a:0 ? a:1 : 1
-  let l:from = line('.')
-  let l:sign = signjump#get_sign(line('.'), '-', l:count)
+  let l:ln = line('.')
+  let l:sign = signjump#get_sign(l:ln, '-', l:count)
   if !empty(l:sign)
     call signjump#jump_to_sign(l:sign)
-    if signjump#get_sign_data(l:sign, 'line') > l:from
+    if signjump#get_sign_data(l:sign, 'line') > l:ln
       \ && stridx(&shortmess, 's')
       call s:err('search hit TOP, continuing at BOTTOM')
     endif
