@@ -3,7 +3,7 @@
 Author:     Alex "ZeroKnight" George <http://www.dimensionzero.net>
 License:    MIT (see LICENSE included with the plugin distribution)
 Homepage:   https://github.com/ZeroKnight/vim-signjump
-Version:    0.5.1
+Version:    0.6
 
 Requires Vim version 7.3+ compiled with +signs feature.
 
