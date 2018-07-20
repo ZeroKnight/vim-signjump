@@ -111,7 +111,7 @@ Background
 ----------
 
 SignJump is my first Vim plugin. I was inspired to write it by this [Vi & Vim
-Stack Exchange question][2].
+Stack Exchange question][3].
 
 I thought that it was very peculiar that Vim doesn't have a user-friendly way
 to jump to signs. The closest thing would be `:sign jump ...`, but having to supply
