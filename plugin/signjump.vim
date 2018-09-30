@@ -36,27 +36,27 @@ function! s:init_options() abort
 endfunction
 call s:init_options()
 
-" FIXME: The @= method interprets a count in the mapping as a repeat, and ends
+" NOTE: The @= method interprets a count in the mapping as a repeat, and ends
 " up calling the function n times with a count of n.
 " For now, since repeating has the same end result, we can get away with just
 " using it as-is. A proper solution to disable the repeat or underlying cause of
 " needing @= would be great.
-nnoremap <silent> <Plug>SignJumpNextSign    :<C-U>call signjump#next_sign()<CR>
-nnoremap <silent> <Plug>SignJumpPrevSign    :<C-U>call signjump#prev_sign()<CR>
-noremap  <silent> <Plug>SignJumpFirstSign   @=signjump#first_sign()<CR>
-noremap  <silent> <Plug>SignJumpLastSign    @=signjump#last_sign()<CR>
-noremap  <silent> <Plug>SignJumpSelNextSign @=signjump#next_sign()<CR>
-noremap  <silent> <Plug>SignJumpSelPrevSign @=signjump#prev_sign()<CR>
+" The functions are passed an explicit count of 1 to prevent a multiplied count
+noremap <silent> <Plug>SignJumpNextSign  @=signjump#next_sign([], 1)<CR>
+noremap <silent> <Plug>SignJumpPrevSign  @=signjump#prev_sign([], 1)<CR>
+noremap <silent> <Plug>SignJumpFirstSign @=signjump#first_sign([], 1)<CR>
+noremap <silent> <Plug>SignJumpLastSign  @=signjump#last_sign([], 1)<CR>
 
 if get(g:signjump, 'create_mappings', 1)
   call s:map('n', g:signjump.map_next_sign,  '<Plug>SignJumpNextSign', 0)
   call s:map('n', g:signjump.map_prev_sign,  '<Plug>SignJumpPrevSign', 0)
   call s:map('n', g:signjump.map_first_sign, '<Plug>SignJumpFirstSign', 0)
   call s:map('n', g:signjump.map_last_sign,  '<Plug>SignJumpLastSign', 0)
+
+  call s:map('x', g:signjump.map_next_sign,  '<Plug>SignJumpNextSign', 0)
+  call s:map('x', g:signjump.map_prev_sign,  '<Plug>SignJumpPrevSign', 0)
   call s:map('x', g:signjump.map_first_sign, '<Plug>SignJumpFirstSign', 0)
   call s:map('x', g:signjump.map_last_sign,  '<Plug>SignJumpLastSign', 0)
-  call s:map('x', g:signjump.map_next_sign,  '<Plug>SignJumpSelNextSign', 0)
-  call s:map('x', g:signjump.map_prev_sign,  '<Plug>SignJumpSelPrevSign', 0)
 endif
 
 command! -bar -nargs=? -count=1 SignJumpNext  call signjump#next_sign(<args>, <count>)
