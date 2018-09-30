@@ -41,8 +41,8 @@ call s:init_options()
 " For now, since repeating has the same end result, we can get away with just
 " using it as-is. A proper solution to disable the repeat or underlying cause of
 " needing @= would be great.
-nnoremap <silent> <Plug>SignJumpNextSign    :<C-U>call signjump#next_sign(v:count1)<CR>
-nnoremap <silent> <Plug>SignJumpPrevSign    :<C-U>call signjump#prev_sign(v:count1)<CR>
+nnoremap <silent> <Plug>SignJumpNextSign    :<C-U>call signjump#next_sign()<CR>
+nnoremap <silent> <Plug>SignJumpPrevSign    :<C-U>call signjump#prev_sign()<CR>
 noremap  <silent> <Plug>SignJumpFirstSign   @=signjump#first_sign()<CR>
 noremap  <silent> <Plug>SignJumpLastSign    @=signjump#last_sign()<CR>
 noremap  <silent> <Plug>SignJumpSelNextSign @=signjump#next_sign()<CR>
@@ -59,9 +59,9 @@ if get(g:signjump, 'create_mappings', 1)
   call s:map('x', g:signjump.map_prev_sign,  '<Plug>SignJumpSelPrevSign', 0)
 endif
 
-command! -bar -count=1 SignJumpNext call signjump#next_sign(<count>)
-command! -bar -count=1 SignJumpPrev call signjump#prev_sign(<count>)
-command! -bar SignJumpFirst         call signjump#first_sign()
-command! -bar SignJumpLast          call signjump#last_sign()
+command! -bar -nargs=? -count=1 SignJumpNext  call signjump#next_sign(<args>, <count>)
+command! -bar -nargs=? -count=1 SignJumpPrev  call signjump#prev_sign(<args>, <count>)
+command! -bar -nargs=?          SignJumpFirst call signjump#first_sign(<args>)
+command! -bar -nargs=?          SignJumpLast  call signjump#last_sign(<args>)
 
 " vim: et sts=2 sw=2
