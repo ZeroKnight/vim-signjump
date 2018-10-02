@@ -160,7 +160,7 @@ endfunction
 
 function! signjump#create_map(map, action, names) abort
   if a:action !~? '\vnext|prev|first|last'
-    call s:err('signjump#add_filter_map: action argument must be one of: ' .
+    call s:err(expand('<sfile>') . ": action argument must be one of: " .
       \ "'next', 'prev', 'first' or 'last'")
     return
   endif
