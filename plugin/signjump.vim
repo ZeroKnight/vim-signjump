@@ -40,20 +40,6 @@ function! s:err(msg) abort
   redraw | echohl Error | echom a:msg | echohl None
 endfunction
 
-function! SignJumpCreateMap(map, action, names) abort
-  if a:action !~? '\vnext|prev|first|last'
-    call s:err('signjump#add_filter_map: action argument must be one of: ' .
-      \ "'next', 'prev', 'first' or 'last'")
-    return
-  endif
-  call s:map('n', a:map,
-    \ '@=signjump#'.tolower(a:action).'_sign('.string(a:names).', 1)<CR>',
-    \ 0, '<silent>')
-  call s:map('x', a:map,
-    \ '@=signjump#'.tolower(a:action).'_sign('.string(a:names).', 1)<CR>',
-    \ 0, '<silent>')
-endfunction
-
 " NOTE: The @= method interprets a count in the mapping as a repeat, and ends
 " up calling the function n times with a count of n.
 " For now, since repeating has the same end result, we can get away with just

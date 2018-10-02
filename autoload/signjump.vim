@@ -158,4 +158,16 @@ function! signjump#last_sign(...) abort
   endif
 endfunction
 
+function! signjump#create_map(map, action, names) abort
+  if a:action !~? '\vnext|prev|first|last'
+    call s:err('signjump#add_filter_map: action argument must be one of: ' .
+      \ "'next', 'prev', 'first' or 'last'")
+    return
+  endif
+  execute 'nnoremap <silent>' a:map
+    \ '@=signjump#'.tolower(a:action).'_sign('.string(a:names).', 1)<CR>'
+  execute 'xnoremap <silent>' a:map
+    \ '@=signjump#'.tolower(a:action).'_sign('.string(a:names).', 1)<CR>'
+endfunction
+
 " vim: et sts=2 sw=2
