@@ -40,7 +40,7 @@ function! s:err(msg) abort
   redraw | echohl Error | echom a:msg | echohl None
 endfunction
 
-function! signjump#add_name_map(map, action, names) abort
+function! SignJumpCreateMap(map, action, names) abort
   if a:action !~? '\vnext|prev|first|last'
     call s:err('signjump#add_filter_map: action argument must be one of: ' .
       \ "'next', 'prev', 'first' or 'last'")
