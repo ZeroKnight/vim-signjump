@@ -3,10 +3,6 @@ if exists('g:autoloaded_signjump') || &compatible
 endif
 let g:autoloaded_signjump = 1
 
-function! s:err(msg) abort
-  redraw | echohl Error | echom a:msg | echohl None
-endfunction
-
 " Given an index and the length of a List, return the index bounded by the range
 " [0, length)
 function! s:bound(idx, len) abort
@@ -123,7 +119,7 @@ function! signjump#next_sign(...) abort
     call signjump#jump_to_sign(l:sign)
     if signjump#get_sign_data(l:sign, 'line') < l:ln
       \ && stridx(&shortmess, 's')
-      call s:err('search hit BOTTOM, continuing at TOP')
+      echoerr 'search hit BOTTOM, continuing at TOP'
     endif
   endif
 endfunction
@@ -137,7 +133,7 @@ function! signjump#prev_sign(...) abort
     call signjump#jump_to_sign(l:sign)
     if signjump#get_sign_data(l:sign, 'line') > l:ln
       \ && stridx(&shortmess, 's')
-      call s:err('search hit TOP, continuing at BOTTOM')
+      echoerr 'search hit TOP, continuing at BOTTOM'
     endif
   endif
 endfunction
@@ -160,8 +156,8 @@ endfunction
 
 function! signjump#create_map(map, action, names) abort
   if a:action !~? '\vnext|prev|first|last'
-    call s:err(expand('<sfile>') . ": action argument must be one of: " .
-      \ "'next', 'prev', 'first' or 'last'")
+    echoerr expand('<sfile>') . ": action argument must be one of: " .
+      \ "'next', 'prev', 'first' or 'last'"
     return
   endif
   execute 'nnoremap <silent>' a:map

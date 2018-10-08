@@ -36,10 +36,6 @@ function! s:init_options() abort
 endfunction
 call s:init_options()
 
-function! s:err(msg) abort
-  redraw | echohl Error | echom a:msg | echohl None
-endfunction
-
 " NOTE: The @= method interprets a count in the mapping as a repeat, and ends
 " up calling the function n times with a count of n.
 " For now, since repeating has the same end result, we can get away with just
