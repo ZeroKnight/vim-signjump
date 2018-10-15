@@ -110,6 +110,9 @@ function! signjump#jump_to_sign(sign) abort
   endif
 endfunction
 
+" NOTE: These jump functions *must* return non-zero, otherwise @= will move the
+" cursor to column 1 after evaluation for some reason.
+
 function! signjump#next_sign(...) abort
   let l:names = get(a:, 1, [])
   let l:count = get(a:, 2, v:count1)
@@ -122,6 +125,7 @@ function! signjump#next_sign(...) abort
       echoerr 'search hit BOTTOM, continuing at TOP'
     endif
   endif
+  return 1
 endfunction
 
 function! signjump#prev_sign(...) abort
@@ -136,6 +140,7 @@ function! signjump#prev_sign(...) abort
       echoerr 'search hit TOP, continuing at BOTTOM'
     endif
   endif
+  return 1
 endfunction
 
 function! signjump#first_sign(...) abort
@@ -144,6 +149,7 @@ function! signjump#first_sign(...) abort
   if !empty(l:signs)
     call signjump#jump_to_sign(l:signs[0])
   endif
+  return 1
 endfunction
 
 function! signjump#last_sign(...) abort
@@ -152,6 +158,7 @@ function! signjump#last_sign(...) abort
   if !empty(l:signs)
     call signjump#jump_to_sign(l:signs[-1])
   endif
+  return 1
 endfunction
 
 function! signjump#create_map(map, action, names) abort
