@@ -34,7 +34,7 @@ function! signjump#get_buffer_signs(buffer, names) abort
 
   let l:out =
     \ filter(
-    \   split(execute('sign place buffer='.a:buffer, 'silent'), '\n'),
+    \   split(execute('sign place group=* buffer='.a:buffer, 'silent'), '\n'),
     \   {idx, val ->
     \     val =~# '=' && (!empty(a:names) ? s:match_name(a:names, val) : 1)})
   call map(l:out, 'v:val[4:]') " Trim indent
@@ -53,7 +53,7 @@ function! signjump#get_buffer_signs(buffer, names) abort
 endfunction
 
 function! signjump#get_sign_data(sign, item) abort
-  return matchlist(a:sign, a:item.'\v\=(\d+)')[1]
+  return get(matchlist(a:sign, a:item.'\v\=(\w+)'), 1, "")
 endfunction
 
 function! s:nearest_sign_idx(signs, line, direction) abort
@@ -101,8 +101,13 @@ function! signjump#jump_to_sign(sign) abort
   if g:signjump.use_jumplist
     execute 'normal!' signjump#get_sign_data(a:sign, 'line') . 'G'
   else
-    execute 'sign jump' signjump#get_sign_data(a:sign, 'id')
-      \ 'buffer=' . bufnr('%')
+    let l:group = signjump#get_sign_data(a:sign, 'group')
+    let l:id = signjump#get_sign_data(a:sign, 'id')
+    if l:group == ""
+      execute 'sign jump ' l:id  'buffer=' . bufnr('%')
+    else
+      execute 'sign jump ' . l:id .  ' group=' . l:group . ' buffer=' . bufnr('%')
+    endif
   endif
 
   if g:signjump.debug
